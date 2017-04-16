@@ -152,6 +152,3 @@ def built_tree(_str, verbose=False):
         head_old = head_new
 
     return T
-
-
-built_tree("abaababaabaaaaaababababbabbabababababaaaaaaaababaabaaaaaabababbbbbbbaababbbbbabababaababaabbababbbabababaaaaaababababab", False)
