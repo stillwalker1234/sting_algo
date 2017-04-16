@@ -12,14 +12,14 @@ def built_tree(_str, verbose=False):
     returns:
     suffix tree, T: list where each element is a list of
         [
-          children,
-          ancestor (list in tree),
-          range of incoming edge (tuple, (start, end)),
+          children: list of nodes,
+          ancestor: node in tree,
+          range of incoming edge: tuple, (start, end),
           s_ptr (list)
         ]
 
-        if children is None -> node is a terminal node,
-        if ancestor is None -> none is root node
+        if children is []] -> node is a terminal node,
+        if ancestor is None -> node is root node
     """
 
     def get_head(node):
@@ -61,11 +61,7 @@ def built_tree(_str, verbose=False):
                         else:
                             full_match = True
                             scan_node = child
-                    
-                    if verbose:
-                        print(_str[i], __str[k])
                 
-                # full match
                 if full_match:
                     if(len(__str) == k + 1):
                         return scan_node, scan_node[2][0]
@@ -83,8 +79,7 @@ def built_tree(_str, verbose=False):
         return scan_node, position
     
     def add_terminal(node, range):
-        new_node = [[], node, range, None]
-        node[0].append(new_node)
+        node[0].append([[], node, range, None])
 
     def add_inner(node_add, position):
         ancestor = node_add[1]
@@ -103,11 +98,9 @@ def built_tree(_str, verbose=False):
 
     head_old = T
     head_new = None
-
-    w_str_dic = {}
-    w_str_dic[""] = T
-
+    
     tail = _str
+    
     # iterate
     for i in range(1, len(_str)):
         if verbose:
@@ -118,13 +111,6 @@ def built_tree(_str, verbose=False):
         u = None if empty_head else head_old[1]
         v = "" if empty_head else _str[head_old[2][0]:head_old[2][1]]
         w = None
-
-        if verbose and u is not None:
-            print("i: %i, head: %s, tail: %s" % (i, get_head(head_old), tail))
-            print("q_outer: %s" % _str[i:])
-            print("head of s(u): %s" % get_head(u[3]))
-            print("v: %s" % v)
-            print(u[2], u[3][2])
 
         if u is not None and (u[2][1] - u[2][0]) > 0:
             w, position = fastscan(u[3], v)
