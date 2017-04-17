@@ -1,5 +1,8 @@
 """
 Author: Jonas Tranberg 2017
+
+Implementation of McCreight's suffix tree construction algorithm
+
 """
 from util import print_tree
 
@@ -24,9 +27,9 @@ def built_tree(_str, verbose=False):
 
     def get_head(node):
         if node is None or node[2] is None:
-            return ""
+            return 0
         else:
-            return get_head(node[1]) + _str[node[2][0]:node[2][1]]
+            return get_head(node[1]) + (node[2][1] - node[2][0])
 
     def fastscan(node, __str):
         if __str == "":
@@ -78,8 +81,8 @@ def built_tree(_str, verbose=False):
 
         return scan_node, position
     
-    def add_terminal(node, range):
-        node[0].append([[], node, range, None])
+    def add_terminal(node, _range, i):
+        node[0].append([[], node, _range, i])
 
     def add_inner(node_add, position):
         ancestor = node_add[1]
@@ -106,7 +109,7 @@ def built_tree(_str, verbose=False):
         if verbose:
             print("===============::============")
         
-        empty_head = head_old[2][0] == 0 and head_old[2][1] == 0
+        empty_head = head_old[2] == (0, 0)
 
         u = None if empty_head else head_old[1]
         v = "" if empty_head else _str[head_old[2][0]:head_old[2][1]]
@@ -128,13 +131,14 @@ def built_tree(_str, verbose=False):
             else:
                 head_new = head_tmp
         
+        head_new_len = get_head(head_new) + i
         head_old[3] = w
-        add_terminal(head_new, (len(get_head(head_new)) + i, len(_str)))
+        add_terminal(head_new, (head_new_len, len(_str)), i)
 
         if verbose:
             print_tree(T, _str)
 
-        tail = _str[i+len(get_head(head_new)):]
+        tail = _str[head_new_len:]
         head_old = head_new
 
     return T
