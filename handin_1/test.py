@@ -25,6 +25,12 @@ def test_McM():
 
         assert is_terminal(t, _s), (i, _s)
 
+def test_missippi():
+    tree = None
+    with open("mississippi.txt", "r") as text:
+        s = text.readline()
+        tree = built_tree(s, False)
+
 
 if __name__ == "__main__":
     test_McM()
