@@ -1,5 +1,5 @@
 """
-Author: Jacob Bieker 2017
+Author: Jacob Bieker and Jonas Tranberg 2017
 
 Using suffix tree for searching in filename
 
