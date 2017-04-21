@@ -95,6 +95,7 @@ def built_tree(_str, verbose=False):
 
         return new_node
 
+
     # build init tree
     T = [[[[], None, (0, len(_str)), 0]], None, (0, 0), None]
     T[0][0][1] = T

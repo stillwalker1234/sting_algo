@@ -44,15 +44,21 @@ if __name__ == "__main__":
     search_string = sys.argv[2]
 
     with open(filename, "r") as datafile:
-        data = datafile.read().replace('\n', '')
+        data = datafile.read().replace('\n', ' ')
         # Build tree from data file
         print(data)
         start = time.time()
         tree = built_tree(data, False)
-        print_tree(tree, data)
         end = time.time()
+        print_tree(tree, data)
         print("Construction Time")
         print(end - start)
         print("Size per character (On average): ")
         print(sys.getsizeof(data)/len(data))
-        print(search(tree, search_string, data))
+        start = time.time()
+        result = search(tree, search_string,data)
+        end = time.time()
+        print("Search Time")
+        print(end - start)
+        result.sort()
+        print(result)
