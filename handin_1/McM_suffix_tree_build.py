@@ -10,19 +10,20 @@ from util import print_tree
 def built_tree(_str, verbose=False):
     """
     params:
-    _str: input _string
+    _str = input string
+    verbose: print stuff?
 
     returns:
-    suffix tree, T: list where each element is a list of
+    suffix tree: list where each node is a list of
         [
           children: list of nodes,
           ancestor: node in tree,
           range of incoming edge: tuple, (start, end),
-          s_ptr (list)
+          s_ptr (list) or starting index of suffix if node is a terminal node
         ]
 
-        if children is []] -> node is a terminal node,
-        if ancestor is None -> node is root node
+        if children is [] -> node is a terminal node,
+        if ancestor is None -> node is the root node
     """
 
     def get_head(node):
