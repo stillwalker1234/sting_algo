@@ -44,7 +44,7 @@ if __name__ == "__main__":
     search_string = sys.argv[2]
 
     with open(filename, "r") as datafile:
-        data = datafile.read().replace('\n', '')
+        data = datafile.read().replace('\n', ' ')
         # Build tree from data file
         print(data)
         start = time.time()
@@ -60,4 +60,5 @@ if __name__ == "__main__":
         end = time.time()
         print("Search Time")
         print(end - start)
+        result.sort()
         print(result)
