@@ -12,7 +12,7 @@ import os, sys, time
 def search(tree, query, string):
     def report_terminals(node):
         if node[0] == []:
-            return [node[3]]
+            return [node[3] + 1]
         else:
             ret = []
             for c in node[0]:
@@ -43,22 +43,38 @@ if __name__ == "__main__":
     filename = sys.argv[1]
     search_string = sys.argv[2]
 
+    verbose = len(sys.argv) > 3 and sys.argv[3] == '--verbose'
+
     with open(filename, "r") as datafile:
         data = datafile.read().replace('\n', ' ')
         # Build tree from data file
-        print(data)
-        start = time.time()
+        if verbose:
+            print(data)
+            start = time.time()
+        
         tree = built_tree(data, False)
-        end = time.time()
-        print_tree(tree, data)
-        print("Construction Time")
-        print(end - start)
-        print("Size per character (On average): ")
-        print(sys.getsizeof(data)/len(data))
-        start = time.time()
+
+        if verbose:
+            end = time.time()
+            sys.stdout.write("\n")
+            
+            print_tree(tree, data)
+            sys.stdout.write("\n")
+            print("Construction Time: %f4" % (end - start))
+            print("Size per character (On average): %i" % (sys.getsizeof(data)/len(data)))
+            start = time.time()
+
         result = search(tree, search_string,data)
-        end = time.time()
-        print("Search Time")
-        print(end - start)
+
+        if verbose:
+            end = time.time()
+            print("Search Time: %f4" % (end - start))
+            sys.stdout.write("\n")
+        
         result.sort()
-        print(result)
+
+        
+        for i in result:
+            sys.stdout.write("%i " % i)
+
+        sys.stdout.write("\n")
