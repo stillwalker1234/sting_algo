@@ -62,6 +62,7 @@ if __name__ == "__main__":
             sys.stdout.write("\n")
             print("Construction Time: %f4" % (end - start))
             print("Size per character (On average): %i" % (sys.getsizeof(data)/len(data)))
+            print("Size of suffix tree (on average): %i" % (sys.getsizeof(tree)/len(tree)))
             start = time.time()
 
         result = search(tree, search_string,data)

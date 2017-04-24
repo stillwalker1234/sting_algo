@@ -35,7 +35,9 @@ def test_missippi():
         result.sort()
         output = None
         with open("mississippi.out", "r") as out:
-            output = out.readline()
+            output = out.readline().strip("\n").split(" ")
+            for index, element in enumerate(output):
+                output[index] = int(element)
         assert output == result
 
 def test_banana():
@@ -47,7 +49,9 @@ def test_banana():
         result.sort()
         output = None
         with open("banana.out", "r") as out:
-            output = out.readline()
+            output = out.readline().strip("\n").split(" ")
+            for index, element in enumerate(output):
+                output[index] = int(element)
         assert output == result
 
 def test_walrus():
@@ -59,7 +63,9 @@ def test_walrus():
         result.sort()
         output = None
         with open("walrus-and-carpenter.out", "r") as out:
-            output = out.readline()
+            output = out.readline().strip("\n").split(" ")
+            for index, element in enumerate(output):
+                output[index] = int(element)
         assert output == result
 
 def test_mariner():
@@ -71,8 +77,14 @@ def test_mariner():
         result.sort()
         output = None
         with open("ancient-mariner.out", "r") as out:
-            output = out.readline()
+            output = out.readline().strip("\n").split(" ")
+            for index, element in enumerate(output):
+                output[index] = int(element)
         assert output == result
 
 if __name__ == "__main__":
     test_McM()
+    test_banana()
+    test_mariner()
+    test_missippi()
+    test_walrus()
