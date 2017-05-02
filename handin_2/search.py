@@ -39,7 +39,8 @@ def search(tree, query, string):
     return _search(tree, query)
 
 
-def find_tandem_repeats(tree):
+def find_tandem_repeats(tree, string):
+    # TODO Add in DFS array
     # Takes a node in a tree, and get the branching tandem repeats
     def get_largest_subnode(node):
         # Get v' and its leaf-list to subtract from the leaf-list of v Step 2a
@@ -53,7 +54,28 @@ def find_tandem_repeats(tree):
         # Now remove the largest sub-leaf-list from the node v's leaf-list, i.e. the children of v and not v'
         leaf_list_prime_v = node[0] - largest_subnode[0]
         return leaf_list_prime_v
-    
+
+    def step_2b(leaf_list_prime, leaf_list, depth, foreward):
+        # TODO Change leaf and leaf_list to locations
+        tandem_repeats = []
+        # Steps 2b and 2c: For each leaf i in LL'(v), test whether leaf j = i +- D(v) is in LL(v)
+        for leaf in leaf_list_prime:
+            # Not sure this works...
+            if foreward:
+                if leaf + depth in leaf_list:
+                    # First check is true
+                    if string[leaf] != string[leaf + 2*depth]:
+                        # Check whether S[i] != S[i + 2D(v)]
+                        tandem_repeats.append([leaf, 2*depth])
+            else:
+                if leaf - depth in leaf_list:
+                    # First check is true
+                    if string[leaf] != string[leaf + 2*depth]:
+                        # Check whether S[i] != S[i + 2D(v)]
+                        tandem_repeats.append([leaf, 2*depth])
+        return tandem_repeats
+
+
 
 
 if __name__ == "__main__":
