@@ -13,3 +13,18 @@ def print_tree(node, _str):
             _print_sub(n, depth+1, size, num_nodes)
 
     _print_sub(node, 0, size, num_nodes)
+
+
+def append_leaf_lists(root):
+    count = [0]
+
+    def _inner(node):
+        if node[0] == []:
+            node.append([count])
+            count[0] += 1
+        else:
+            node.append(sum(map(_inner, node[0]), []))
+
+        return node[-1]
+
+    _inner(root)
