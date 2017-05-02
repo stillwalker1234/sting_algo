@@ -42,7 +42,7 @@ def search(tree, query, string):
 def find_tandem_repeats(tree, string):
     # TODO Add in DFS array
     # Takes a node in a tree, and get the branching tandem repeats
-    def get_largest_subnode(node):
+    def _get_largest_subnode(node):
         # Get v' and its leaf-list to subtract from the leaf-list of v Step 2a
         largest_subnode = None
         largest_subleaflist = (0,0)
@@ -53,14 +53,30 @@ def find_tandem_repeats(tree, string):
                 largest_subnode = subnode
         # Now remove the largest sub-leaf-list from the node v's leaf-list, i.e. the children of v and not v'
         leaf_list_prime_v = node[0] - largest_subnode[0]
+        leaf_list_prime_v = []
+        # Now have list of child nodes not in the largest subnode, not leaf-list though. Leaf list would just be range?
+        new_range_start = (node[2][0], largest_subnode[2][0] - node[2][0])
+        new_range_end = (node[2][1] - largest_subnode[2][1], node[2][1])
+        # new_range_start, new_range_end are the ranges of leafs not under LL(v')
+        for i in range(new_range_start[0], new_range_start[1]):
+            leaf_list_prime_v.append(i)
+        for i in range(new_range_end[0], new_range_end[0]):
+            leaf_list_prime_v.append(i)
         return leaf_list_prime_v
 
-    def step_2b(leaf_list_prime, leaf_list, depth, foreward):
-        # TODO Change leaf and leaf_list to locations
+    def _step_2(leaf_list_prime, leaf_list, depth, foreward):
+        """
+        
+        :param leaf_list_prime: the list of leafs in LL'(v)
+        :param leaf_list: the list of leafs in LL(v)
+        :param depth: Depth of node v
+        :param foreward: whether to do foreward or backwards search, boolean
+        :return: list of tandem repeats and their lengths
+        """
+        # Get the leaf number for every leaf in the list, that number + depth gives whether its in the big leaf-list
         tandem_repeats = []
         # Steps 2b and 2c: For each leaf i in LL'(v), test whether leaf j = i +- D(v) is in LL(v)
         for leaf in leaf_list_prime:
-            # Not sure this works...
             if foreward:
                 if leaf + depth in leaf_list:
                     # First check is true
