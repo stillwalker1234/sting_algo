@@ -13,3 +13,27 @@ def print_tree(node, _str):
             _print_sub(n, depth+1, size, num_nodes)
 
     _print_sub(node, 0, size, num_nodes)
+
+def append_leaf_lists(root):
+    count = [0]
+    # Should create a list of length equal to the number of nodes, which will be more than the number of leaves, but
+    # can just ignore the other stuff for now
+    dfs = [0] * len(root[0])
+    dfs_counter = 0
+
+    def _inner(node, dfs_count):
+        if node[0] == []:
+            node.append([count])
+            count[0] += 1
+            # Adds the successive DFS ordering number to the node if its a leaf
+            dfs_count += 1
+            node.append(dfs_count)
+            # Assigns the dfs number for the leaf to the array, indexed at the leaf-list number
+            # Currently, they seem to be the same.... so not sure the usefulness
+            dfs[count[0]] = dfs_count
+        else:
+            node.append(sum(map(_inner, node[0]), []))
+
+        return node[-1]
+
+    _inner(root, dfs_counter)
