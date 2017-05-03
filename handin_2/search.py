@@ -41,7 +41,17 @@ def search(tree, query, string):
 
 def find_tandem_repeats(tree, string):
     # TODO Add in DFS array
-    # Takes a node in a tree, and get the branching tandem repeats
+    # Takes a node in a tree, and get the branching tandem repeats, currently, tree holds
+    # leaf-list at each node, not DFS numbering
+    dfs = []
+    def dfs_create(tree):
+        """
+        Return the DFS numbering of the tree
+        :param tree: The tree with leaf-list
+        :return: 
+        """
+        def _depth_first
+
     def _get_largest_subnode(node):
         # Get v' and its leaf-list to subtract from the leaf-list of v Step 2a
         largest_subnode = None
