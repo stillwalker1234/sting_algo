@@ -25,6 +25,7 @@ def append_leaf_lists(root):
         if node[0] == []:
             # Adds the successive DFS ordering number to the node if its a leaf
             dfs_count += 1
+            # So should be second-to-last in the node, same as the DFS range in the internal nodes
             node.append(dfs_count)
             # Added above the count, so node[-1] gives the leaf-list count and not DFS count
             node.append([count])
