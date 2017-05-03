@@ -85,10 +85,27 @@ def find_tandem_repeats(tree, string, dfs):
                     if string[leaf] != string[leaf + 2*depth]:
                         # Check whether S[i] != S[i + 2D(v)]
                         # Second check is true, so tandem repeat
-                        tandem_repeats.append([leaf, 2*depth])
+                        tandem_repeats.append([leaf, string[leaf], 2*depth])
         return tandem_repeats
 
-    def _inner(node):
+    def _find_nonbranching_repeat(tandem_repeats, string):
+        """
+        Get the non-branching tandem repeats through enumeration
+        :param tandem_repeats: The list of tandem repeats
+        :param string: The string used in the tree and tandem repeats
+        :return: List containing all tandem repeats, branching and non-branching
+        """
+        for repeat in tandem_repeats:
+            # For tandem repeat (i, wa, 2), see if S[i - 1] = a
+            # If so, then non-branching repeat is (i - 1, aw, 2)
+            if string[repeat[0] - 1] == string[repeat[0]][-1]:
+                # Tandem repeat
+                # Pretty sure the comparision is wrong, and should use while loop instead
+                tandem_repeats.append([repeat[0] - 1, string[repeat[0][-1], repeat[2]]])
+
+        return tandem_repeats
+
+    def _inner(node, tandem_repeats):
         """
         Iterates through the tree, calling the other functions to find tandem repeats
         :param node: Node of the tree
@@ -102,11 +119,16 @@ def find_tandem_repeats(tree, string, dfs):
                 # Is internal node, so tandem repeat finding here
                 leaf_list_prime = _get_largest_subnode(subnode)
                 # Get the branching tandem repeats
-                tandem_repeat_list.append(_step_2(leaf_list_prime, depth_count, dfs, subnode, True))
-                tandem_repeat_list.append(_step_2(leaf_list_prime, depth_count, dfs, subnode, False))
+                tandem_repeats.append(_step_2(leaf_list_prime, depth_count, dfs, subnode, True))
+                tandem_repeats.append(_step_2(leaf_list_prime, depth_count, dfs, subnode, False))
 
                 #Continue down the subnodes
                 _inner(subnode)
+            # Once all tandem branching repeats found, now go for non-branching ones
+            tandem_repeats = _find_nonbranching_repeat(tandem_repeat_list, string)
+
+        return tandem_repeats
+    tandem_repeat_list = _inner(tree, tandem_repeat_list)
 
 
 
