@@ -39,7 +39,10 @@ def search(tree, query, string):
     return _search(tree, query)
 
 
-def find_tandem_repeats(tree, string):
+def find_tandem_repeats(tree, string, dfs):
+
+    tandem_repeat_list = []
+    depth_count = 0
     # Takes a node in a tree, and get the branching tandem repeats
     def _get_largest_subnode(node):
         # Get v' and its leaf-list to subtract from the leaf-list of v Step 2a
@@ -52,11 +55,10 @@ def find_tandem_repeats(tree, string):
         leaf_list_prime_v = [leaf for leaf in node[-1] if leaf not in largest_subleaflist]
         return leaf_list_prime_v
 
-    def _step_2(leaf_list_prime, leaf_list, depth, dfs, v, foreward):
+    def _step_2(leaf_list_prime, depth, dfs, v, foreward):
         """
         
         :param leaf_list_prime: the list of leafs in LL'(v)
-        :param leaf_list: the list of leafs in LL(v)
         :param depth: Depth of node v
         :param dfs: DFS array, indexed by leaf-list number
         :param v: Node v, the root of the subtree we are looking at
@@ -85,6 +87,27 @@ def find_tandem_repeats(tree, string):
                         # Second check is true, so tandem repeat
                         tandem_repeats.append([leaf, 2*depth])
         return tandem_repeats
+
+    def _inner(node):
+        """
+        Iterates through the tree, calling the other functions to find tandem repeats
+        :param node: Node of the tree
+        :return: The list of tandem repeats and their locations
+        """
+        # TODO Still need to mark the nodes that we visit
+        # TODO Possible problem with going down two depths at once? (Current Node -> subnode(children) -> looks at subnode's subnodes
+        for subnode in node[0]:
+            # Go through each subnode
+            if subnode[0] != []:
+                # Is internal node, so tandem repeat finding here
+                leaf_list_prime = _get_largest_subnode(subnode)
+                # Get the branching tandem repeats
+                tandem_repeat_list.append(_step_2(leaf_list_prime, depth_count, dfs, subnode, True))
+                tandem_repeat_list.append(_step_2(leaf_list_prime, depth_count, dfs, subnode, False))
+
+                #Continue down the subnodes
+                _inner(subnode)
+
 
 
 
