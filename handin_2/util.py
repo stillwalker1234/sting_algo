@@ -23,16 +23,24 @@ def append_leaf_lists(root):
 
     def _inner(node, dfs_count):
         if node[0] == []:
-            node.append([count])
-            count[0] += 1
             # Adds the successive DFS ordering number to the node if its a leaf
             dfs_count += 1
             node.append(dfs_count)
+            # Added above the count, so node[-1] gives the leaf-list count and not DFS count
+            node.append([count])
+            count[0] += 1
             # Assigns the dfs number for the leaf to the array, indexed at the leaf-list number
             # Currently, they seem to be the same.... so not sure the usefulness
             dfs[count[0]] = dfs_count
         else:
+            # Not a child node
+            # Add next DFS number to the internal node as the start of the range of leafs it covers
+            node.append([dfs_count+1])
             node.append(sum(map(_inner, node[0]), []))
+            # Append the last dfs_count to the internal node as the end of the range of leafs it covers
+            # I think -2 is right because of the append(sum(map)) thing should be last
+            # dfs_count should be updated from _inner so it is the last one it includes
+            node[-2].append(dfs_count)
 
         return node[-1]
 
