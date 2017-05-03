@@ -98,10 +98,16 @@ def find_tandem_repeats(tree, string, dfs):
         for repeat in tandem_repeats:
             # For tandem repeat (i, wa, 2), see if S[i - 1] = a
             # If so, then non-branching repeat is (i - 1, aw, 2)
-            if string[repeat[0] - 1] == string[repeat[0]][-1]:
+            decrement = 1
+            if string[repeat[0] - decrement] == string[repeat[0]][-1]:
                 # Tandem repeat
                 # Pretty sure the comparision is wrong, and should use while loop instead
-                tandem_repeats.append([repeat[0] - 1, string[repeat[0][-1], repeat[2]]])
+                tandem_repeats.append([repeat[0] - decrement, string[repeat[0]][-1] + string[repeat[0]][0:-1], repeat[2]])
+                # Now that there is atleast one translation, repeat process until not valid
+                while string[tandem_repeats[-1][0] - decrement] == string[tandem_repeats[-1][0]][-1]:
+                    # Not sure that updating tandem_repeat while its used works, but I think this is
+                    # in general a right way to do it, goes until it fails, then repeats the process
+                    tandem_repeats.append([tandem_repeats[-1][0] - decrement, string[tandem_repeats[-1][0]][-1] + string[tandem_repeats[-1][0]][0:-1], tandem_repeats[-1][2]])
 
         return tandem_repeats
 
