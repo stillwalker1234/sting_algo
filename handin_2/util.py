@@ -27,7 +27,6 @@ def append_leaf_lists(root, str_size):
             # Currently, they seem to be the same.... so not sure the usefulness
             dfs2leaf_id[count[0]] = node[-1]
             leaf_id2_dfs[node[-1]] = count[0]
-            print(node[-1], count[0])
             node.append((count[0], count[0]))
             count[0] += 1
 

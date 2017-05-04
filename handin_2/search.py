@@ -80,7 +80,6 @@ def find_tandem_repeats(tree, string, d2l_map, l2d_map):
                 i = d2l_map[leaf]
                 j = i + depth
                 if not (v[4][1] >= l2d_map[j] >= v[4][0]):
-                    print(depth, i, v[4], string[i], string[i + 2*depth], l2d_map[j])
                     continue
             else:
                 j = d2l_map[leaf]
@@ -92,7 +91,6 @@ def find_tandem_repeats(tree, string, d2l_map, l2d_map):
             if string[i] != string[i + 2*depth]:
                 # Check whether S[i] != S[i + 2D(v)]
                 # Second check is true, so tandem repeat
-                print("hello")
                 tandem_repeats.append((i, depth))
            
         return tandem_repeats
@@ -148,9 +146,8 @@ def find_tandem_repeats(tree, string, d2l_map, l2d_map):
 
 if __name__ == "__main__":
     filename = sys.argv[1]
-    search_string = sys.argv[2]
 
-    verbose = len(sys.argv) > 3 and sys.argv[3] == '--verbose'
+    verbose = len(sys.argv) > 2 and sys.argv[2] == '--verbose'
 
     with open(filename, "r") as datafile:
         data = datafile.read().replace('\n', ' ')
@@ -179,9 +176,11 @@ if __name__ == "__main__":
             print("Search Time: %f4" % (end - start))
             sys.stdout.write("\n")
         
-        print(d2l_map, l2d_map)
 
-        for i in result:
-            sys.stdout.write("l: %s \n" % str(i))
+        for i in result[0]:
+            sys.stdout.write("non_branching: (%i, %i, 2) \n" % i)
+        
+        for i in result[1]:
+            sys.stdout.write("branching: (%i, %i, 2) \n" % i)
 
-        sys.stdout.write("\n")
+        sys.stdout.write("%i %i \n" % tuple([len(j) for j in result][::-1]))
