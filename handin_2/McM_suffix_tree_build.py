@@ -144,6 +144,7 @@ def built_tree(_str, verbose=False):
         head_old = head_new
 
     #Add in the leaf-lists needed for Project 2
-    append_leaf_lists(T)
+    
+    dfs = append_leaf_lists(T, len(_str))
 
-    return T
+    return T, dfs
