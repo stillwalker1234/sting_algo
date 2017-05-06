@@ -5,7 +5,7 @@ Using suffix tree for getting tandem repeats
 
 """
 from McM_suffix_tree_build import built_tree
-from util import print_tree
+from util import print_tree, compare_tandem_repeats_result
 import sys, time
 
 
@@ -57,7 +57,7 @@ def find_tandem_repeats(tree, string, d2l_map, l2d_map):
                 # Larger than the current range, so the largest one
                 largest = subnode
         # Now remove the largest sub-leaf-list from the node v's leaf-list, i.e. the leaves of v and not v'
-        leaf_list_prime_v = range(node[4][0], largest[4][0]) + range(largest[4][1], node[4][1])
+        leaf_list_prime_v = range(node[4][0], largest[4][0]) + range(largest[4][1]+1, node[4][1]+1)
 
         return leaf_list_prime_v
 
@@ -76,6 +76,8 @@ def find_tandem_repeats(tree, string, d2l_map, l2d_map):
         # Steps 2b and 2c: For each leaf i in LL'(v), test whether leaf j = i +- D(v) is in LL(v)
         # To do that, just check whether, for leaf j, d2l_map[j] is between the d2l_map values recorded at v
         for leaf in leaf_list_prime:
+            # Checking if DFS[j] is between the ranges of DFS numbers stored at v
+            
             if foreward:
                 i = d2l_map[leaf]
                 j = i + depth
@@ -86,10 +88,11 @@ def find_tandem_repeats(tree, string, d2l_map, l2d_map):
                 i = j - depth
                 if not (v[4][1] >= l2d_map[i] >= v[4][0]):
                     continue
-                # Checking if DFS[j] is between the ranges of DFS numbers stored at v
-                    # First check is true
+            
+            # First check is true
+            
+            # Check whether S[i] != S[i + 2D(v)]
             if string[i] != string[i + 2*depth]:
-                # Check whether S[i] != S[i + 2D(v)]
                 # Second check is true, so tandem repeat
                 tandem_repeats.append((i, depth))
            
@@ -122,8 +125,6 @@ def find_tandem_repeats(tree, string, d2l_map, l2d_map):
         :param node: Node of the tree
         :return: The list of tandem repeats and their locations
         """
-        # TODO Still need to mark the nodes that we visit
-        # TODO Possible problem with going down two depths at once? (Current Node -> subnode(children) -> looks at subnode's subnodes
         if node[0] == []:
             pass
         else:
@@ -171,16 +172,21 @@ if __name__ == "__main__":
 
         result = find_tandem_repeats(tree, data, d2l_map, l2d_map)
 
+        out_str = ""
+
         if verbose:
             end = time.time()
             print("Search Time: %f4" % (end - start))
             sys.stdout.write("\n")
         
-
         for i in result[0]:
-            sys.stdout.write("non_branching: (%i, %i, 2) \n" % i)
+            out_str += "(%i,%i,2) non_branching\n" % i
         
         for i in result[1]:
-            sys.stdout.write("branching: (%i, %i, 2) \n" % i)
+            out_str += "(%i,%i,2) branching\n" % i
+
+        with open(filename[:-4] + ".out", 'r') as gt_fp:
+            compare_tandem_repeats_result(gt_fp, out_str.split('\n'), data)
 
         sys.stdout.write("%i %i \n" % tuple([len(j) for j in result][::-1]))
+        sys.stdout.write("%i %i \n" % tuple([len(set(j)) for j in result][::-1]))
