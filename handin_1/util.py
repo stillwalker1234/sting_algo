@@ -9,6 +9,7 @@ def print_tree(node, _str):
         num_nodes += 1
         print(('_' * depth) + str(_node[2]) + " : " + _str[_node[2][0]:_node[2][1]] + " : " + (str(_node[3]) if not type(_node[3]) is list else ""))
         print(size/num_nodes)
+        print("Node Range: " + str(_node[2]))
         for n in _node[0]:
             _print_sub(n, depth+1, size, num_nodes)
 
