@@ -4,7 +4,7 @@ Author: Jonas Tranberg 2017
 Implementation of McCreight's suffix tree construction algorithm
 
 """
-from util import print_tree, append_leaf_lists
+from util import print_tree
 
 
 def built_tree(_str, verbose=False):
@@ -143,8 +143,4 @@ def built_tree(_str, verbose=False):
         tail = _str[head_new_len:]
         head_old = head_new
 
-    #Add in the leaf-lists needed for Project 2
-    
-    dfs = append_leaf_lists(T, len(_str))
-
-    return T, dfs
+    return T
