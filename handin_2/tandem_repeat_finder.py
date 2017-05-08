@@ -10,6 +10,7 @@ def find_tandem_repeats(tree, string):
     """
     return list [[non_branching], [branching]]
     """
+
     def append_leaf_lists(root, str_size):
         """
         creates the dfs numbering of each leaf, and add implicit child ranges to internal nodes
@@ -29,7 +30,7 @@ def find_tandem_repeats(tree, string):
                 node.append((count[0], count[0]))
                 count[0] += 1
             else:
-                ranges = map(_inner, node[0])
+                ranges = list(map(_inner, node[0]))
                 node.append((ranges[0][0], ranges[-1][-1]))
             return node[-1]
 
@@ -51,7 +52,7 @@ def find_tandem_repeats(tree, string):
                 largest = subnode
 
         # return range excluding largest child node
-        leaf_list_prime_v = range(node[-1][0], largest[-1][0]) + range(largest[-1][1]+1, node[-1][1]+1)
+        leaf_list_prime_v = list(range(node[-1][0], largest[-1][0])) + list(range(largest[-1][1]+1, node[-1][1]+1))
 
         return leaf_list_prime_v
 

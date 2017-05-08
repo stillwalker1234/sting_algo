@@ -1,5 +1,38 @@
 import sys
+import timeit
 from ast import literal_eval as tuple_from_str
+
+
+def analyse(func_under_test, args_gen, tests_points, number=5, multiple_args=True):
+    """
+
+    :param func_under_test: the function to measure
+    :param args_gen: function that returns tuple of args to func_under_test
+    :param tests_points: x-axis
+    :param number: number repeats to create the test point average
+    :return: y-axis, time given args_gen(test point)
+    """
+    result = []
+
+    global current_args
+    global f
+    f = func_under_test
+
+    for k in tests_points:
+        agg_value = 0.
+        for j in range(number):
+            current_args = args_gen(k)
+            if multiple_args:
+                stm = "f(*current_args)"
+            else:
+                stm = "f(current_args)"
+
+            agg_value += timeit.timeit(stmt=stm,
+                    setup="from util import f, current_args",
+                    number=1)
+        result += [agg_value / float(number)]
+
+    return result
 
 
 def print_tree(node, _str):
@@ -32,7 +65,7 @@ def compare_tandem_repeats_result(grund_truth, result, _str):
                 print(line)
     
     _add(gt_brn)
-    print()
+    print(" ")
     _add(rlt_brn)
 
     def _print(elem):
