@@ -21,8 +21,11 @@ def naive(query, _string):
     ret = []
 
     for i in range(n-m+1):
-        if _string[i:i+m] == query:
-            ret.append(i)
+        for j in range(m):
+            if _string[i+j] != query[j]:
+                break
+            elif j == m-1:
+                ret.append(i)
 
     return ret
 
