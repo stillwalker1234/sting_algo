@@ -63,6 +63,27 @@ def test_algo_complexity(algos):
 
     plt.show()
 
+def test_algo_simple(algos):
+
+    def args_generator(n, max_n=100**2):
+        _str = ''.join('a' for _ in range((n)))
+        _str_2 = ''.join('a' for _ in range((n/4) + 1))
+        return _str, _str_2
+
+    _r = [i**2 for i in range(20, 10000, 10)]
+
+    handles = []
+    for i, algo in enumerate(algos):
+        y = analyse(algo, args_generator, _r)
+
+        handles.append(plt.plot(_r, y, label=str(i))[0])
+
+    plt.legend(handles=handles)
+
+    plt.show()
+
 
 if __name__ == "__main__":
     test_algo_complexity([naive, ba, kmp])
+    test_algo_simple([naive, ba, kmp])
+
