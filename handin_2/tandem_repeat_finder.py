@@ -23,14 +23,17 @@ def find_tandem_repeats(tree, string):
         leaf_id2_dfs = [0] * str_size
 
         def _inner(node):
+            # Checks if there is no children, if not, terminal node
             if node[0] == []:
+                # Map to each other
                 dfs2leaf_id[count[0]] = node[-1]
                 leaf_id2_dfs[node[-1]] = count[0]
-
+                # Initial range of (0,0) b/c terminal
                 node.append((count[0], count[0]))
                 count[0] += 1
             else:
                 ranges = list(map(_inner, node[0]))
+                # Gets the children of the current node and runs map on it, appending the first and last  values of the range
                 node.append((ranges[0][0], ranges[-1][-1]))
             return node[-1]
 
@@ -41,6 +44,7 @@ def find_tandem_repeats(tree, string):
     d2l_map, l2d_map = append_leaf_lists(tree, len(string))
 
     def _leaf_list_len(node):
+        # Subtract end from start of range to get length
         return node[-1][1] - node[-1][0]
     
     def _get_LL_small_range(node):
